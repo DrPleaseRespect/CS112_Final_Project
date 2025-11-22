@@ -86,7 +86,7 @@ public class Main {
         String guestName = kbd.nextLine();
 
         do {
-            System.out.print("Enter Room Type: 1. Standard 2. Deluxe 3. \nSuite: ");
+            System.out.print("Room Types:\n1. Standard\n 2. Deluxe\n 3. Suite\nEnter Room Type (1-3): ");
             roomType = kbd.nextInt();
             if (roomType < 1 || roomType > 3) {
                 System.out.println("\nInvalid room type. Please try again.");
@@ -209,7 +209,7 @@ public class Main {
         String[] rowHeaders = new String[rooms.length]; // Create row headers
         String[] colHeaders = new String[rooms[0].length]; // Create column headers
         for (int room = 0; room < rooms.length; room++) {
-            rowHeaders[room] = "Room" + (room + 1); // Set row header
+            rowHeaders[room] = "T" + (room + 1); // Set row header
             for (int night = 0; night < rooms[0].length; night++) {
                 if (room == 0) { // Set column headers only once
                     colHeaders[night] = "Night " + (night + 1);
