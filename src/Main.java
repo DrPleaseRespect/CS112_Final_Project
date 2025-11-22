@@ -15,11 +15,15 @@ public class Main {
 
     static boolean[][] standardRooms = allRooms[0]; // Reference to Standard Rooms for easy access
 
+    // Contains guest names for each room (Repeats for each night booked)
     // Schema: standardRooms[roomType][roomNumber][night]
     static String[][][] roomGuests = {new String[15][10], // Standard Rooms
             new String[10][10], // Deluxe Rooms
             new String[5][10] // Suite Rooms
     };
+
+    // Contains number of nights booked for each room
+    // Decrements each night until 0 when the room becomes available again
     // Schema: nightsBooked[roomType][roomNumber][night]
     static int[][][] nightsBooked = {new int[15][10], // Standard Rooms
             new int[10][10], // Deluxe Rooms
@@ -45,7 +49,7 @@ public class Main {
                     reserve(kbd);
                     break;
                 case 2:
-                    cancel(kbd, allRooms[0]);
+                    //cancel(kbd, allRooms[0]);
                     break;
                 case 3:
                     showRooms(allRooms[0]);
@@ -195,28 +199,6 @@ public class Main {
         }
 
 
-
-    }
-
-    // Cancel bookings
-    public static void cancel(Scanner kbd, boolean[][] rooms) {
-        System.out.print("Enter column (A-J): ");
-        char columnChar = kbd.next().toUpperCase().charAt(0);
-        int column = columnChar - 'A';
-
-        System.out.print("Enter row (1-10): ");
-        int row = kbd.nextInt() - 1;
-
-        if (valid(row, column, rooms)) {
-            if (standardRooms[row][column]) {
-                standardRooms[row][column] = false;
-                System.out.println("\nCancelled!");
-            } else {
-                System.out.println("\nRoom is not booked!");
-            }
-        } else {
-            System.out.println("\nInvalid location!");
-        }
     }
 
     // Show available and unavailable rooms
