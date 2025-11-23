@@ -244,6 +244,11 @@ public class Main {
         System.out.println("Available Hotel Rooms: ");
         // Convert boolean array to String array for printing
         String[][] displayData = new String[rooms.length][rooms[0].length]; // Create a String array to hold display data
+        //                                   ^                ^
+        //                                   |                |------- Number of Nights
+        //                                   |
+        //                                   |---- Number of Rooms
+        //
         String[] rowHeaders = new String[rooms.length]; // Create row headers
         String[] colHeaders = new String[rooms[0].length]; // Create column headers
         for (int room = 0; room < rooms.length; room++) {
