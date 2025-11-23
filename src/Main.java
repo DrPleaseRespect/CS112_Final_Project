@@ -8,12 +8,12 @@ public class Main {
     // roomType: 0 - Standard, 1 - Deluxe, 2 - Suite
     // roomNumber: 0-14 for Standard, 0-9 for Deluxe, 0-4 for Suite
     // night: 0-9 (10 nights)
-    static boolean[][][] allRooms = {new boolean[15][10], // Standard Rooms (allRooms[0]
-            new boolean[10][10], // Deluxe Rooms (allRooms[1])
-            new boolean[5][10] // Suite Rooms (allRooms[2])
-    };
 
-    static boolean[][] standardRooms = allRooms[0]; // Reference to Standard Rooms for easy access
+    // String value is either "Available" or "Booked" or "Occupied"
+    static String[][][] allRooms = {new String[15][10], // Standard Rooms (allRooms[0]
+            new String[10][10], // Deluxe Rooms (allRooms[1])
+            new String[5][10] // Suite Rooms (allRooms[2])
+    };
 
     // Contains guest names for each room (Repeats for each night booked)
     // Schema: standardRooms[roomType][roomNumber][night]
@@ -33,9 +33,8 @@ public class Main {
 
 
 
-
-
     public static void main(String[] args) {
+        initializeRooms(); // Initialize all rooms to "Available"
         Scanner kbd = new Scanner(System.in);
         int choice;
 
@@ -61,6 +60,9 @@ public class Main {
                     showRooms(allRooms[0]);
                     break;
                 case 4:
+                    showGuests();
+                    break;
+                case 5:
                     System.out.println("\nThank you for visiting this hotel!");
                     break;
                 default:
@@ -69,7 +71,7 @@ public class Main {
 
             System.out.println();
 
-        } while (choice != 4);
+        } while (choice != 5);
     }
 
     // Show the hotel menu
@@ -78,7 +80,8 @@ public class Main {
         System.out.println("1. Book a room");
         System.out.println("2. Cancel a booking");
         System.out.println("3. View available rooms");
-        System.out.println("4. Exit\n");
+        System.out.println("4. View guests");
+        System.out.println("5. Exit\n");
     }
 
 
@@ -117,7 +120,7 @@ public class Main {
 
 
         roomType = roomType - 1; // Adjust for 0-based index
-        boolean[][] rooms = allRooms[roomType]; //obtain reference to the selected room type
+        String[][] rooms = allRooms[roomType]; //obtain reference to the selected room type
         int roomRow = -1;
         int nightColumn = -1;
         boolean available = true;
@@ -136,7 +139,9 @@ public class Main {
                         available = false; // Exceeds booking period
                         break;
                     }
-                    available = !rooms[room][night + i]; // If any night is booked, set available to false
+                    if (!(rooms[room][night + i].equalsIgnoreCase("Available"))) { // Check if already booked, null means available
+                        available = false; // If any night is booked, set available to false
+                    }
                 }
 
                 if (available) { // Found an available room
@@ -145,7 +150,7 @@ public class Main {
 
                     // Book the room for the required number of nights
                     for (int i = 0; i < nights; i++) {
-                        rooms[roomRow][nightColumn + i] = true;
+                        rooms[roomRow][nightColumn + i] = "Booked";
                         roomGuests[roomType][roomRow][nightColumn + i] = guestName;
                         nightsBooked[roomType][roomRow][nightColumn + i] = nights - i; // Store remaining nights
                     }
@@ -199,7 +204,7 @@ public class Main {
 
         // Search for available room based on type
         roomType = roomType - 1; // Adjust for 0-based index
-        boolean[][] rooms = allRooms[roomType]; //obtain reference to the selected room type
+        String[][] rooms = allRooms[roomType]; //obtain reference to the selected room type
 
         int roomRow = -1;
         boolean available = true;
@@ -208,7 +213,7 @@ public class Main {
             // Check if the room is available for the required number of nights
             for (int i = 0; i < nights && available; i++) {
                 // Assume booking starts from night 0 for check-in
-                available = !rooms[room][i]; // If any night is booked, set available to false
+                available = !rooms[room][i].equalsIgnoreCase("Available"); // If any night is booked, set available to false
             }
 
             if (available) { // Found an available room
@@ -216,7 +221,7 @@ public class Main {
 
                 // Book the room for the required number of nights
                 for (int i = 0; i < nights; i++) {
-                    rooms[roomRow][i] = true;
+                    rooms[roomRow][i] = "Occupied";
                     roomGuests[roomType][roomRow][i] = guestName;
                     nightsBooked[roomType][roomRow][i] = nights;
                 }
@@ -235,7 +240,7 @@ public class Main {
     }
 
     // Show available and unavailable rooms
-    public static void showRooms(boolean[][] rooms) {
+    public static void showRooms(String[][] rooms) {
         System.out.println("Available Hotel Rooms: ");
         // Convert boolean array to String array for printing
         String[][] displayData = new String[rooms.length][rooms[0].length]; // Create a String array to hold display data
@@ -247,7 +252,32 @@ public class Main {
                 if (room == 0) { // Set column headers only once
                     colHeaders[night] = "Night " + (night + 1);
                 }
-                displayData[room][night] = rooms[room][night] ? "Booked" : "Available"; // Set display data
+                displayData[room][night] = rooms[room][night]; // Set display data
+                if (rooms[room][night] == null) {
+                    displayData[room][night] = "Available"; // Mark available rooms
+                }
+            }
+        }
+        printTable(displayData, rowHeaders, colHeaders); // Print the table using the helper function
+
+    }
+
+
+    // Show available and unavailable rooms
+    public static void showGuests() {
+        System.out.println("Guests in Rooms: ");
+        String[][] rooms = roomGuests[0]; // Reference to Standard Rooms guest names
+        // Convert boolean array to String array for printing
+        String[][] displayData = new String[rooms.length][rooms[0].length]; // Create a String array to hold display data
+        String[] rowHeaders = new String[rooms.length]; // Create row headers
+        String[] colHeaders = new String[rooms[0].length]; // Create column headers
+        for (int room = 0; room < rooms.length; room++) {
+            rowHeaders[room] = "T" + (room + 1); // Set row header
+            for (int night = 0; night < rooms[0].length; night++) {
+                if (room == 0) { // Set column headers only once
+                    colHeaders[night] = "Night " + (night + 1);
+                }
+                displayData[room][night] = rooms[room][night]; // Set display data
             }
         }
         printTable(displayData, rowHeaders, colHeaders); // Print the table using the helper function
@@ -310,9 +340,14 @@ public class Main {
         }
     }
 
-
-    // Check if within boundaries
-    public static boolean valid(int r, int c, boolean[][] rooms) {
-        return r >= 0 && r < rooms.length && c >= 0 && c < rooms.length;
+    // Initialize all rooms to "Available" status
+    public static void initializeRooms() {
+        for (int type = 0; type < allRooms.length; type++) {
+            for (int room = 0; room < allRooms[type].length; room++) {
+                for (int night = 0; night < allRooms[type][room].length; night++) {
+                    allRooms[type][room][night] = "Available";
+                }
+            }
+        }
     }
 }
