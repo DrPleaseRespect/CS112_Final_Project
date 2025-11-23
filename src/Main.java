@@ -263,17 +263,19 @@ public class Main {
     public static void printTable(String[][] data, String[] rowHeaders, String[] colHeaders) {
         // Obtain data the longest length for formatting
         int paddingLength = 0;
-        for (String[] row : data) { // Iterate through each row
-            for (String item : row) { // Iterate through each item in the row
-                if (item != null && item.length() > paddingLength) {  // Check for null to avoid errors
-                    paddingLength = item.length(); // Update max length if current item is longer
-                }
-            }
-        }
         // Obtain column header max length
         for (String header : colHeaders) {
             if (header.length() > paddingLength) { // Check if header is longer than current max
                 paddingLength = header.length(); // Update max length
+            }
+        }
+
+        // Obtain data max length
+        for (String[] row : data) {
+            for (String item : row) {
+                if (item != null && item.length() > paddingLength) { // Check if data item is longer than current max
+                    paddingLength = item.length(); // Update max length
+                }
             }
         }
         paddingLength += 2; // Add extra padding
