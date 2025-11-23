@@ -42,7 +42,13 @@ public class Main {
         do {
             printMenu();
             System.out.print("Choose: ");
-            choice = Integer.parseInt(kbd.nextLine());
+            String input = kbd.nextLine();
+
+            if (input.isEmpty()) {
+                choice = -1; // Invalid choice
+            } else {
+                choice = Integer.parseInt(input);
+            }
 
             switch (choice) {
                 case 1:
