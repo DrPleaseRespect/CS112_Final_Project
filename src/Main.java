@@ -280,7 +280,7 @@ public class Main {
 
         System.out.println(); // Ensure new line before printing
 
-        // Print initial padding for row headers
+        // Print initial padding for column headers
         System.out.print(" ".repeat(paddingLength));
         for (String header : colHeaders) { // Print each column header
             String padding = " ".repeat(paddingLength - header.length()); // Calculate padding
