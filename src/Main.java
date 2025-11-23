@@ -42,7 +42,7 @@ public class Main {
         do {
             printMenu();
             System.out.print("Choose: ");
-            choice = kbd.nextInt();
+            choice = Integer.parseInt(kbd.nextLine());
 
             switch (choice) {
                 case 1:
@@ -82,12 +82,12 @@ public class Main {
 
         int roomType;
 
-        System.out.println("Enter Guest Name: ");
+        System.out.print("Enter Guest Name: ");
         String guestName = kbd.nextLine();
 
         do {
             System.out.print("Room Types:\n1. Standard\n2. Deluxe\n3. Suite\nEnter Room Type (1-3): ");
-            roomType = kbd.nextInt();
+            roomType = Integer.parseInt(kbd.nextLine());
             if (roomType < 1 || roomType > 3) {
                 System.out.println("\nInvalid room type. Please try again.");
             }
@@ -95,7 +95,7 @@ public class Main {
 
         // Search for available room based on type
         System.out.print("Enter number of nights to book: ");
-        int nights = kbd.nextInt();
+        int nights = Integer.parseInt(kbd.nextLine());
         roomType = roomType - 1; // Adjust for 0-based index
         boolean[][] rooms = allRooms[roomType]; //obtain reference to the selected room type
         int roomRow = -1;
@@ -156,7 +156,7 @@ public class Main {
 
         do {
             System.out.print("Room Types:\n1. Standard\n2. Deluxe\n3. Suite\nEnter Room Type (1-3): ");
-            roomType = kbd.nextInt();
+            roomType = Integer.parseInt(kbd.nextLine());
             if (roomType < 1 || roomType > 3) {
                 System.out.println("\nInvalid room type. Please try again.");
             }
@@ -164,7 +164,7 @@ public class Main {
 
         // Search for available room based on type
         System.out.print("Enter number of nights to book: ");
-        int nights = kbd.nextInt();
+        int nights = Integer.parseInt(kbd.nextLine());
         roomType = roomType - 1; // Adjust for 0-based index
         boolean[][] rooms = allRooms[roomType]; //obtain reference to the selected room type
 
