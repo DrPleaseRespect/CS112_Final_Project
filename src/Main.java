@@ -94,8 +94,22 @@ public class Main {
         } while (roomType < 1 || roomType > 3);
 
         // Search for available room based on type
-        System.out.print("Enter number of nights to book: ");
-        int nights = Integer.parseInt(kbd.nextLine());
+        int nights = -1;
+        do {
+            System.out.print("Enter number of nights to book: ");
+            String input = kbd.nextLine();
+
+            if (input.isEmpty()) {
+                nights = -1; // Invalid choice
+            } else {
+                nights = Integer.parseInt(input);
+                if (nights < 1 || nights > 10) {
+                    System.out.println("\nInvalid number of nights. Please enter a value between 1 and 10.");
+                }
+            }
+        } while (nights < 1 || nights > 10);
+
+
         roomType = roomType - 1; // Adjust for 0-based index
         boolean[][] rooms = allRooms[roomType]; //obtain reference to the selected room type
         int roomRow = -1;
