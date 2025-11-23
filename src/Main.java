@@ -86,7 +86,7 @@ public class Main {
         String guestName = kbd.nextLine();
 
         do {
-            System.out.print("Room Types:\n1. Standard\n 2. Deluxe\n 3. Suite\nEnter Room Type (1-3): ");
+            System.out.print("Room Types:\n1. Standard\n2. Deluxe\n3. Suite\nEnter Room Type (1-3): ");
             roomType = kbd.nextInt();
             if (roomType < 1 || roomType > 3) {
                 System.out.println("\nInvalid room type. Please try again.");
@@ -155,7 +155,7 @@ public class Main {
         String guestName = kbd.nextLine();
 
         do {
-            System.out.print("Room Types:\n1. Standard\n 2. Deluxe\n 3. Suite\nEnter Room Type (1-3): ");
+            System.out.print("Room Types:\n1. Standard\n2. Deluxe\n3. Suite\nEnter Room Type (1-3): ");
             roomType = kbd.nextInt();
             if (roomType < 1 || roomType > 3) {
                 System.out.println("\nInvalid room type. Please try again.");
