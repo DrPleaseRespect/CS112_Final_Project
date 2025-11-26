@@ -152,7 +152,7 @@ public class Main {
                     for (int i = 0; i < nights; i++) {
                         rooms[roomRow][nightColumn + i] = "Booked";
                         roomGuests[roomType][roomRow][nightColumn + i] = guestName;
-                        nightsBooked[roomType][roomRow][nightColumn + i] = nights - i; // Store remaining nights
+                        nightsBooked[roomType][roomRow][nightColumn + i] = i + 1; // Store remaining nights
                     }
                     break;
                 }
