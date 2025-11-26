@@ -152,7 +152,7 @@ public class Main {
                     for (int i = 0; i < nights; i++) {
                         rooms[roomRow][nightColumn + i] = "Booked";
                         roomGuests[roomType][roomRow][nightColumn + i] = guestName;
-                        nightsBooked[roomType][roomRow][nightColumn + i] = i + 1; // Store remaining nights
+                        nightsBooked[roomType][roomRow][nightColumn + i] = nights; // Store remaining nights
                     }
                     break;
                 }
@@ -174,69 +174,7 @@ public class Main {
     }
 
     public static void checkInMenu(Scanner kbd) {
-        int roomType;
-
-        System.out.println("Enter Guest Name: ");
-        String guestName = kbd.nextLine();
-
-        do {
-            System.out.print("Room Types:\n1. Standard\n2. Deluxe\n3. Suite\nEnter Room Type (1-3): ");
-            roomType = Integer.parseInt(kbd.nextLine());
-            if (roomType < 1 || roomType > 3) {
-                System.out.println("\nInvalid room type. Please try again.");
-            }
-        } while (roomType < 1 || roomType > 3);
-
-        int nights = -1;
-        do {
-            System.out.print("Enter number of nights to book: ");
-            String input = kbd.nextLine();
-
-            if (input.isEmpty()) {
-                nights = -1; // Invalid choice
-            } else {
-                nights = Integer.parseInt(input);
-                if (nights < 1 || nights > 10) {
-                    System.out.println("\nInvalid number of nights. Please enter a value between 1 and 10.");
-                }
-            }
-        } while (nights < 1 || nights > 10);
-
-        // Search for available room based on type
-        roomType = roomType - 1; // Adjust for 0-based index
-        String[][] rooms = allRooms[roomType]; //obtain reference to the selected room type
-
-        int roomRow = -1;
-        boolean available = true;
-        for (int room = 0; room < rooms.length; room++) {
-            available = true; // reset availability for each room
-            // Check if the room is available for the required number of nights
-            for (int i = 0; i < nights && available; i++) {
-                // Assume booking starts from night 0 for check-in
-                available = !rooms[room][i].equalsIgnoreCase("Available"); // If any night is booked, set available to false
-            }
-
-            if (available) { // Found an available room
-                roomRow = room;
-
-                // Book the room for the required number of nights
-                for (int i = 0; i < nights; i++) {
-                    rooms[roomRow][i] = "Occupied";
-                    roomGuests[roomType][roomRow][i] = guestName;
-                    nightsBooked[roomType][roomRow][i] = nights;
-                }
-                break;
-            }
-        }
-        if (roomRow != -1 || available) { // Found an available room
-            System.out.println("\nRoom booked successfully!");
-            System.out.println("Room Number: " + (roomRow + 1));
-            System.out.println("Duration: " + nights + " nights");
-        } else { // No available room found
-            System.out.println("\nNo available rooms for the selected type and duration.");
-        }
-
-
+        // Implement CheckIn Menu Here
     }
 
     // Show available and unavailable rooms
