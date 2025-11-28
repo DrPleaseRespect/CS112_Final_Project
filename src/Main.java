@@ -315,14 +315,14 @@ public class Main {
         System.out.println(specificRoomNumber);
 
 
-        if(roomNumberArray[0] == 'S' || roomNumberArray[1] == '1') {
-            System.out.println(roomGuests[0][0][0]);
-        } else if(roomNumberArray[0] == 'D' || roomNumberArray[1] == '2') {
+        if(roomNumberArray[0] == 'S' && roomNumberArray[1] == '1' && specificRoomNumber <= 15) {
+            System.out.println(roomGuests[0][specificRoomNumber - 1][0]);
+        } else if(roomNumberArray[0] == 'D' && roomNumberArray[1] == '2' && specificRoomNumber <= 10) {
             //deluxe
-        } else if(roomNumberArray[0] == 'T' || roomNumberArray[1] == '3') {
+        } else if(roomNumberArray[0] == 'T' && roomNumberArray[1] == '3' && specificRoomNumber <= 5) {
             //suite
         } else {
-            //invalid
+            System.out.println("no rooms");
         }
     }
 
