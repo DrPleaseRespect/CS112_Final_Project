@@ -31,8 +31,6 @@ public class Main {
     };
 
 
-
-
     public static void main(String[] args) {
         initializeRooms(); // Initialize all rooms to "Available"
         Scanner kbd = new Scanner(System.in);
@@ -63,6 +61,9 @@ public class Main {
                     showGuests();
                     break;
                 case 5:
+                    checkout(kbd);
+                    break;
+                case 6:
                     System.out.println("\nThank you for visiting this hotel!");
                     break;
                 default:
@@ -77,11 +78,12 @@ public class Main {
     // Show the hotel menu
     public static void printMenu() {
         System.out.println("Group 6 Hotel Booking");
-        System.out.println("1. Book a room");
+        System.out.println("1. Book a room"); // Reserve
         System.out.println("2. Cancel a booking");
-        System.out.println("3. View available rooms");
+        System.out.println("3. View available rooms"); //room availability
         System.out.println("4. View guests");
-        System.out.println("5. Exit\n");
+        System.out.println("5. Check-out / Generate Bill");
+        System.out.println("6. Exit\n");
     }
 
 
@@ -172,6 +174,7 @@ public class Main {
             System.out.println("\nNo available rooms for the selected type and duration.");
         }
     }
+
 
     public static void checkInMenu(Scanner kbd) {
         // Implement CheckIn Menu Here
@@ -283,6 +286,7 @@ public class Main {
         }
     }
 
+
     // Initialize all rooms to "Available" status
     public static void initializeRooms() {
         for (int type = 0; type < allRooms.length; type++) {
@@ -293,4 +297,29 @@ public class Main {
             }
         }
     }
+
+
+    public static void checkout(Scanner kbd) {
+        System.out.print("Input room number for check-out: ");
+        String roomNumber = kbd.nextLine();
+        System.out.println("Verifying checkout for " + roomNumber);
+    }
+
+
+    // guest name self explanatory
+    // room for the room number
+    // subtotal from the check out calculation
+    // amountpaid from the input
+    public static double payment(double subtotal, double amountPaid) {
+        while(true) {
+            if (amountPaid >= subtotal) {
+                double change = amountPaid - subtotal;
+                break;
+            } else {
+                System.out.println("transaction unsuccessful, repeat...");
+            }
+        }
+        return 0.0;
+    }
+
 }
