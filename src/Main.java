@@ -31,6 +31,7 @@ public class Main {
     };
 
 
+
     public static void main(String[] args) {
         initializeRooms(); // Initialize all rooms to "Available"
         Scanner kbd = new Scanner(System.in);
@@ -303,18 +304,39 @@ public class Main {
         System.out.print("Input room number for check-out: ");
         String roomNumber = kbd.nextLine();
         System.out.println("Verifying checkout for " + roomNumber);
+
+        //ts is so complicated🥀
+        //converts room number into index for the arrays
+        //S101 -> ['S','1','0','1']
+        // the long one takes the last 2 digits and turn them into integer
+        //HOLY SHIT IT WORKED
+        char[] roomNumberArray = roomNumber.toCharArray();
+        int specificRoomNumber = Integer.parseInt(String.valueOf(roomNumberArray[2]) + String.valueOf(roomNumberArray[3]));
+        System.out.println(specificRoomNumber);
+
+
+        if(roomNumberArray[0] == 'S' || roomNumberArray[1] == '1') {
+            System.out.println(roomGuests[0][0][0]);
+        } else if(roomNumberArray[0] == 'D' || roomNumberArray[1] == '2') {
+            //deluxe
+        } else if(roomNumberArray[0] == 'T' || roomNumberArray[1] == '3') {
+            //suite
+        } else {
+            //invalid
+        }
     }
 
 
-    // guest name self explanatory
-    // room for the room number
     // subtotal from the check out calculation
-    // amountpaid from the input
-    public static double payment(double subtotal, double amountPaid) {
+    public static double calculatePayment(double subtotal, Scanner kbd) {
         while(true) {
+            System.out.println("Input Final Payment Amount: ");
+            double amountPaid = kbd.nextDouble();
+
             if (amountPaid >= subtotal) {
                 double change = amountPaid - subtotal;
                 break;
+
             } else {
                 System.out.println("transaction unsuccessful, repeat...");
             }
