@@ -131,8 +131,8 @@ public class Main {
                     System.out.println("\nInvalid number of nights. Please enter a value between 1 and 10.");
                 }
             }
-            nightStarting = nightStarting - 1; // Adjust for 0-based index
         } while (nightStarting < 1 || nightStarting > 10);
+        nightStarting = nightStarting - 1; // Adjust for 0-based index
 
 
         roomType = roomType - 1; // Adjust for 0-based index
@@ -146,7 +146,7 @@ public class Main {
         // Outer loop iterates through nights (columns)
         // Inner loop iterates through rooms (rows)
         // we try to book the earliest available room
-        for (int night = 0; night < rooms[0].length; night++) {
+        for (int night = nightStarting; night < rooms[0].length; night++) {
             for (int room = 0; room < rooms.length; room++) {
                 available = true; // reset availability for each room
                 // Check if the room is available for the required number of nights
