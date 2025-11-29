@@ -54,7 +54,7 @@ public class Main {
                     reserve(kbd);
                     break;
                 case 2:
-                    //cancel(kbd, allRooms[0]);
+                    cancel(kbd);
                     break;
                 case 3:
                     showRooms(allRooms[0]);
@@ -186,6 +186,68 @@ public class Main {
             System.out.println("Duration: " + nights + " nights");
         } else {
             System.out.println("\nNo available rooms for the selected type and duration.");
+        }
+    }
+
+    // By Antony Reyes
+    // [NEW CODE] Implementation of Cancel Feature
+    public static void cancel(Scanner kbd) {
+        System.out.println("\n--- Cancel Booking ---");
+        System.out.print("Input Room Number to Cancel (e.g., T1, D2): ");
+        String roomInput = kbd.nextLine();
+
+        // Basic Validation (similar to checkOut logic)
+        if(roomInput.length() < 2) {
+            System.out.println("Invalid format.");
+            return;
+        }
+
+        char typeChar = roomInput.charAt(0);
+        int roomNum;
+        try {
+            roomNum = Integer.parseInt(roomInput.substring(1)) - 1; // Convert to 0-based index
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid room number format.");
+            return;
+        }
+
+        int typeIndex = -1;
+        if (typeChar == 'T' || typeChar == 't') typeIndex = 0;
+        else if (typeChar == 'D' || typeChar == 'd') typeIndex = 1;
+        else if (typeChar == 'S' || typeChar == 's') typeIndex = 2;
+        else {
+            System.out.println("Invalid room type.");
+            return;
+        }
+
+        // Validate bounds
+        if (roomNum < 0 || roomNum >= allRooms[typeIndex].length) {
+            System.out.println("Room number does not exist.");
+            return;
+        }
+
+        System.out.print("Enter Guest Name to confirm cancellation: ");
+        String verifyName = kbd.nextLine();
+        boolean found = false;
+
+        // Iterate through nights for this specific room
+        for(int night = 0; night < 10; night++) {
+            // Check if name matches
+            if(roomGuests[typeIndex][roomNum][night] != null &&
+                    roomGuests[typeIndex][roomNum][night].equalsIgnoreCase(verifyName)) {
+
+                // Clear the data
+                allRooms[typeIndex][roomNum][night] = "Available";
+                roomGuests[typeIndex][roomNum][night] = null;
+                nightsBooked[typeIndex][roomNum][night] = 0;
+                found = true;
+            }
+        }
+
+        if(found) {
+            System.out.println("Booking successfully cancelled for " + verifyName + " in room " + roomInput);
+        } else {
+            System.out.println("No booking found for guest " + verifyName + " in room " + roomInput);
         }
     }
 
