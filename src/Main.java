@@ -57,7 +57,7 @@ public class Main {
                     cancel(kbd);
                     break;
                 case 3:
-                    showRooms(allRooms[0]);
+                    showRooms(allRooms, kbd);
                     break;
                 case 4:
                     showGuests();
@@ -256,83 +256,55 @@ public class Main {
     }
 
     // Show available and unavailable rooms
-    public static void showRooms(Scanner kbd) {
-        System.out.println("Available Hotel Rooms: ");
-        // Convert boolean array to String array for printing
-        String[][] displayData; // Create a String array to hold display data
-        String[]   rowHeaders; // Create row headers
-        String[]   colHeaders; // Create column headers
-        String[][] rooms;
+    public static void showRooms(String[][][] allRooms, Scanner kbd) {
+        System.out.println("Available Hotel Rooms:");
 
-        int typeAvail = 0;
+        // Standard, Deluxe, Suite Labels
+        String[] prefixes = { "S", "D", "T" };
+        int typeAvail;
+
+        // Room Type Checker + Validator
         do {
             System.out.print("Room Types:\n1. Standard\n2. Deluxe\n3. Suite\nEnter Room Type (1-3): ");
             typeAvail = Integer.parseInt(kbd.nextLine());
-
-            switch (typeAvail) {
-                case 1:
-                    rooms = allRooms[0]; // Reference to Standard Rooms
-                    displayData = new String[rooms.length][rooms[0].length];
-                    rowHeaders = new String[rooms.length];
-                    colHeaders = new String[rooms[0].length];
-                    //Standard Room Availability
-                    for (int room = 0; room < rooms.length; room++) {
-                        rowHeaders[room] = "S" + (room + 1); // Set row header
-                        for (int night = 0; night < rooms[1].length; night++) {
-                            if (room == 0) { // Set column headers only once
-                                colHeaders[night] = "Night " + (night + 1);
-                            }
-                            displayData[room][night] = rooms[room][night]; // Set display data
-                            if (rooms[room][night] == null) {
-                                displayData[room][night] = "Available"; // Mark available rooms
-                            }
-                        }
-                    }
-                    printTable(displayData, rowHeaders, colHeaders); // Print the table using the helper function
-                    break;
-                case 2:
-                    rooms = allRooms[1]; // Reference to Deluxe Rooms
-                    displayData = new String[rooms.length][rooms[0].length];
-                    rowHeaders = new String[rooms.length];
-                    colHeaders = new String[rooms[0].length];
-                    //Deluxe Room Availability
-                    for (int room = 0; room < rooms.length; room++) {
-                        rowHeaders[room] = "D" + (room + 1); // Set row header
-                        for (int night = 0; night < rooms[2].length; night++) {
-                            if (room == 0) { // Set column headers only once
-                                colHeaders[night] = "Night " + (night + 1);
-                            }
-                            displayData[room][night] = rooms[room][night]; // Set display data
-                            if (rooms[room][night] == null) {
-                                displayData[room][night] = "Available"; // Mark available rooms
-                            }
-                        }
-                    }
-                    printTable(displayData, rowHeaders, colHeaders); // Print the table using the helper function
-                    break;
-                case 3:
-                    rooms = allRooms[2]; // Reference to Suite Rooms
-                    displayData = new String[rooms.length][rooms[0].length];
-                    rowHeaders = new String[rooms.length];
-                    colHeaders = new String[rooms[0].length];
-                    //Suite Room Availability
-                    for (int room = 0; room < rooms.length; room++) {
-                        rowHeaders[room] = "T" + (room + 1); // Set row header
-                        for (int night = 0; night < rooms[0].length; night++) {
-                            if (room == 0) { // Set column headers only once
-                                colHeaders[night] = "Night " + (night + 1);
-                            }
-                            displayData[room][night] = rooms[room][night]; // Set display data
-                            if (rooms[room][night] == null) {
-                                displayData[room][night] = "Available"; // Mark available rooms
-                            }
-                        }
-                    }
-                    printTable(displayData, rowHeaders, colHeaders); // Print the table using the helper function
-                    break;
-                default: System.out.println("Invalid Room Type! Please try again.");
+            if (typeAvail < 1 || typeAvail > 3) {
+                System.out.println("\nInvalid Room Type! Please choose between 1-3\n");
             }
         } while (typeAvail < 1 || typeAvail > 3);
+
+        // Determine Room Type Label
+        String prefix = prefixes[typeAvail - 1];
+
+        // Room Type Specifier
+        String[][] rooms = allRooms[typeAvail - 1];
+
+        // Convert boolean array to String array for printing
+        String[][] displayData = new String[rooms.length][rooms[0].length]; // Create a String array to hold display data
+        //                                   ^                ^
+        //                                   |                |------- Number of Nights
+        //                                   |
+        //                                   |---- Number of Rooms
+        //
+        String[] rowHeaders = new String[rooms.length];       // Create row headers
+        String[] colHeaders = new String[rooms[0].length];    // Create column headers
+
+        for (int room = 0; room < rooms.length; room++) {
+            rowHeaders[room] = prefix + (room + 1); // Set row Header
+
+            for (int night = 0; night < rooms[0].length; night++) {
+                if (room == 0) { // Set column headers only once
+                    colHeaders[night] = "Night " + (night + 1);
+                }
+
+                displayData[room][night] = rooms[room][night]; // Set display data
+
+                if (rooms[room][night] == null) {
+                    displayData[room][night] = "Available"; // Mark available rooms
+                }
+            }
+        }
+
+        printTable(displayData, rowHeaders, colHeaders); // Print the table using the helper function
     }
 
 
