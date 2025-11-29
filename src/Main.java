@@ -118,6 +118,22 @@ public class Main {
             }
         } while (nights < 1 || nights > 10);
 
+        int nightStarting = -1;
+        do {
+            System.out.print("Enter what starting night to book: ");
+            String input = kbd.nextLine();
+
+            if (input.isEmpty()) {
+                nightStarting = -1; // Invalid choice
+            } else {
+                nightStarting = Integer.parseInt(input);
+                if (nightStarting < 1 || nightStarting > 10) {
+                    System.out.println("\nInvalid number of nights. Please enter a value between 1 and 10.");
+                }
+            }
+            nightStarting = nightStarting - 1; // Adjust for 0-based index
+        } while (nightStarting < 1 || nightStarting > 10);
+
 
         roomType = roomType - 1; // Adjust for 0-based index
         String[][] rooms = allRooms[roomType]; //obtain reference to the selected room type
