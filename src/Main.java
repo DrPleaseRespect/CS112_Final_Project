@@ -111,7 +111,7 @@ public class Main {
             } else {
                 nights = Integer.parseInt(input);
                 if (nights < 1 || nights > 10) {
-                    System.out.println("\nInvalid number of nights. Please enter a value between 1 and 10.");
+                    System.out.println("\nInvalid number of nights. Please enter a value between 2 and 10.");
                 }
             }
         } while (nights < 1 || nights > 10);
@@ -125,11 +125,11 @@ public class Main {
                 nightStarting = -1; // Invalid choice
             } else {
                 nightStarting = Integer.parseInt(input);
-                if (nightStarting < 1 || nightStarting > 10) {
-                    System.out.println("\nInvalid number of nights. Please enter a value between 1 and 10.");
+                if (nightStarting < 2 || nightStarting > 10) {
+                    System.out.println("\nInvalid number of nights. Please enter a value between 2 and 10.");
                 }
             }
-        } while (nightStarting < 1 || nightStarting > 10);
+        } while (nightStarting < 2 || nightStarting > 10);
         nightStarting = nightStarting - 1; // Adjust for 0-based index
 
 
