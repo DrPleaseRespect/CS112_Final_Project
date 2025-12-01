@@ -31,8 +31,6 @@ public class Main {
     };
 
 
-
-
     public static void main(String[] args) {
         initializeRooms(); // Initialize all rooms to "Available"
         Scanner kbd = new Scanner(System.in);
@@ -197,7 +195,7 @@ public class Main {
         String roomInput = kbd.nextLine();
 
         // Basic Validation (similar to checkOut logic)
-        if(roomInput.length() < 2) {
+        if (roomInput.length() < 2) {
             System.out.println("Invalid format.");
             return;
         }
@@ -231,9 +229,9 @@ public class Main {
         boolean found = false;
 
         // Iterate through nights for this specific room
-        for(int night = 0; night < 10; night++) {
+        for (int night = 0; night < 10; night++) {
             // Check if name matches
-            if(roomGuests[typeIndex][roomNum][night] != null &&
+            if (roomGuests[typeIndex][roomNum][night] != null &&
                     roomGuests[typeIndex][roomNum][night].equalsIgnoreCase(verifyName)) {
 
                 // Clear the data
@@ -244,7 +242,7 @@ public class Main {
             }
         }
 
-        if(found) {
+        if (found) {
             System.out.println("Booking successfully cancelled for " + verifyName + " in room " + roomInput);
         } else {
             System.out.println("No booking found for guest " + verifyName + " in room " + roomInput);
@@ -362,7 +360,7 @@ public class Main {
         System.out.println("Available Hotel Rooms:");
 
         // Standard, Deluxe, Suite Labels
-        String[] prefixes = { "S", "D", "T" };
+        String[] prefixes = {"S", "D", "T"};
         int typeAvail;
 
         // Room Type Checker + Validator
@@ -500,7 +498,7 @@ public class Main {
 
     // Kristoff Contrib - Check-Out Method
     // Method to handle the check-out process
-    public static void checkOut(Scanner kbd){
+    public static void checkOut(Scanner kbd) {
         System.out.print("Input Room Number for Check-Out: ");
         char roomChar; // Stores the first character of the room (T, D, or S)
         int roomInd; // Stores the numeric part of the room number (e.g. T1, gets number after T)
@@ -510,7 +508,7 @@ public class Main {
         do {
             room = kbd.nextLine();
             // Ensure room input is more than 1 character (must have type + number)
-            while (room.length() <= 1){ // modified from == to <= to catch single character inputs and blank inputs
+            while (room.length() <= 1) { // modified from == to <= to catch single character inputs and blank inputs
                 System.out.println("Room number is not given....");
                 System.out.print("Input Room Number for Check-Out: ");
                 room = kbd.nextLine();
@@ -521,9 +519,9 @@ public class Main {
             // NOTE: uses naming scheme of digits 1-15 as room number, change beginIndex to 2 if using naming scheme of 101-115, 201-210, 301-305
 
             // Validate room type and index based on limits
-            switch (roomChar){ // Standard rooms (T1–T15)
+            switch (roomChar) { // Standard rooms (T1–T15)
                 case 'T' -> {
-                    while(roomInd < 0 || roomInd > 15){
+                    while (roomInd < 0 || roomInd > 15) {
                         System.out.println("Room number input exceeds amount of rooms in Standard Type...");
                         System.out.print("Input Room Number for Check-Out: ");
                         room = kbd.nextLine();
@@ -567,13 +565,15 @@ public class Main {
                 guestsRoomNum = guestsRoom[roomInd - 1]; // Specific guest list for room
                 generalRoomNum = generalRoom[roomInd - 1]; // Specific room availability
                 numDaysId(guestsRoomNum, generalRoomNum, 'T', room); // Process checkout
-            } case 'D' -> {
+            }
+            case 'D' -> {
                 guestsRoom = roomGuests[1]; // Guests in Deluxe rooms
                 generalRoom = allRooms[1]; // Room availability for Deluxe
                 guestsRoomNum = guestsRoom[roomInd - 1];
                 generalRoomNum = generalRoom[roomInd - 1];
                 numDaysId(guestsRoomNum, generalRoomNum, 'D', room);
-            } case 'S' -> {
+            }
+            case 'S' -> {
                 guestsRoom = roomGuests[2]; // Guests in Suite rooms
                 generalRoom = allRooms[2]; // Room availability for Suite
                 guestsRoomNum = guestsRoom[roomInd - 1];
@@ -646,7 +646,7 @@ public class Main {
         do {
             System.out.print("Input Final Payment Amount: ");
             pay = Double.parseDouble(kbd.nextLine());
-            if (pay < totalAmt){
+            if (pay < totalAmt) {
                 System.out.println("Error... Payment given is lesser than Total Amount Due");
                 System.out.print("Input Final Payment Amount: ");
                 pay = Double.parseDouble(kbd.nextLine());
@@ -666,5 +666,5 @@ public class Main {
         System.out.println("**Change Due: " + change + "**");
         System.out.println("**Check-Out Complete. Room " + roomName + " is now available.**");
     }
-    
+
 }
