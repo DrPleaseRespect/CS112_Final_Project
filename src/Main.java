@@ -584,36 +584,36 @@ public class Main {
     }
 
     // Method to calculate number of days stayed and free up the room (uses guest list)
-    public static void numDaysId(String[] guestsRoomNum, String[] generalRoomNum, char roomType, String room){
-        for (int iniDay = 0; iniDay < guestsRoomNum.length; iniDay++){
-            if (guestsRoomNum[iniDay] != null) { // Found a booked guest
-                String key = guestsRoomNum[iniDay]; // Guest name
-                int finDay = iniDay + 1;
-
-                // Count consecutive days booked by same guest
-                for (; finDay < guestsRoomNum.length; finDay++) {
-                    if (!key.equalsIgnoreCase(guestsRoomNum[finDay])) {
-                        break;
-                    }
-                    guestsRoomNum[finDay] = null; // Free up guest slot
-                    generalRoomNum[finDay] = "Available"; // Mark room as available
+    public static void numDaysId(String[] guestsRoomNum, String[] generalRoomNum, char roomType, String room) {
+        // removed outer for loop, only checks if 1st day/index is "Occupied"
+        // changed iniDay to 0
+        // renamed finDay to numDays
+        // adjusted code to fit in with the changes stated above
+        if (generalRoomNum[0].equals("Occupied")) { // Found a booked guest
+            String key = guestsRoomNum[0]; // Guest name
+            int numDays = 1; // Initialize total days stayed
+            // Count consecutive days booked by same guest
+            for (; numDays < generalRoomNum.length; numDays++) {
+                if (!key.equalsIgnoreCase(guestsRoomNum[numDays])) {
+                    break;
                 }
-
-                // Free up the first day slot
-                guestsRoomNum[iniDay] = null;
-                generalRoomNum[iniDay] = "Available";
-
-                int numDays = finDay - iniDay; // Total days stayed
-                System.out.println("Verifying Check-Out for " + room);
-
-                // Generate bill for guest
-                genBill(numDays, roomType, key, room);
-                break;
-            } else if (guestsRoomNum[iniDay] == null && iniDay == 9){ // No booking found
-                System.out.println("No booked room found in provided room number.");
+                guestsRoomNum[numDays] = null; // Free up guest slot
+                generalRoomNum[numDays] = "Available"; // Mark room as available
             }
+            // Free up the first day slot
+            guestsRoomNum[0] = null;
+            generalRoomNum[0] = "Available";
+
+            System.out.println("Verifying Check-Out for " + room);
+
+            // Generate bill for guest
+            genBill(numDays, roomType, key, room);
+
+        } else { // No booking found
+            System.out.println("No occupied room found in provided room number.");
         }
     }
+
 
     // Method to generate bill and finalize payment
     public static void genBill(int numDays, char roomType, String guestName, String roomName) {
@@ -666,44 +666,5 @@ public class Main {
         System.out.println("**Change Due: " + change + "**");
         System.out.println("**Check-Out Complete. Room " + roomName + " is now available.**");
     }
-
-
-
-    //**NOTE**
-    //currently ni check lang kung BOOKED ang isang room para maka identify ng room na icheck out pero dapat mag check out lang siya
-    //if may nahanap na OCCUPIED pero since wala pa namang check in method based on the code na binigay ni julian, pina gana ko nalang
-    //sa BOOKED pero if meron na yung check in guest ito dapat yung magiging code para sa numDaysId
-    //di pa na verify itong code sa baba ni replace ko lang based on what I think yung mag apply kung meron na yung check in
-   /*
-    public static void numDaysId(String[] guestsRoomNum, String[] generalRoomNum, char roomType, String room){
-        for (int iniDay = 0; iniDay < generalRoomNum.length; iniDay++){
-            if (generalRoomNum[iniDay] == "Occupied") { // Found an OCCUPIED guest
-                String key = guestsRoomNum[iniDay]; // Guest name
-                int finDay = iniDay + 1;
-
-                // Count consecutive days booked by same guest
-                for (; finDay < guestsRoomNum.length; finDay++) {
-                    if (!key.equalsIgnoreCase(guestsRoomNum[finDay])) {
-                        break;
-                    }
-                    guestsRoomNum[finDay] = null; // Free up guest slot
-                    generalRoomNum[finDay] = "Available"; // Mark room as available
-                }
-
-                // Free up the first day slot
-                guestsRoomNum[iniDay] = null;
-                generalRoomNum[iniDay] = "Available";
-
-                int numDays = finDay - iniDay; // Total days stayed
-                System.out.println("Verifying Check-Out for " + room);
-
-                // Generate bill for guest
-                genBill(numDays, roomType, key, room);
-                break;
-            } else if (generalRoomNum[iniDay] != "Occupied" && iniDay == 9){ // No booking found
-                System.out.println("No booked room found in provided room number.");
-            }
-        }
-    }
-    */
+    
 }
