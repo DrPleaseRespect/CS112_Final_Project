@@ -82,6 +82,32 @@ public class Main {
         System.out.println("5. Exit\n");
     }
 
+    //Helper function for error handling -- Jaysen & Mauryz
+    public static boolean isNumber(String s) {
+        if (s == null || s.isEmpty()) return false; // if string is null or empty
+        for (int i = 0; i < s.length(); i++) {  // iterate through each character
+            if (s.charAt(i) < '0' || s.charAt(i) > '9') return false; // if character is not a digit return false
+        }
+        return true; // otherwise return true
+    }
+
+    // Helper function to obtain valid integer input -- Julian Nayr Rosete
+    public static int obtainInt(Scanner kbd) {
+        do {
+            String input = kbd.nextLine();
+
+            if (input.isEmpty()) {
+                System.out.println("Invalid Input. Please try again.");
+            } else {
+                if (isNumber(input)) {
+                    return Integer.parseInt(input);
+                } else {
+                    System.out.println("Invalid Input. Please try again.");
+                }
+            }
+        } while (true);
+    }
+
 
     // Book rooms
     public static void reserve(Scanner kbd) {
