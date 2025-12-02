@@ -269,12 +269,20 @@ public class Main {
     }
 
     public static void checkInMenu(Scanner kbd) {
+
+        // Changes from the previous code: (pakiremove ito kapag iintegrate sa main code)
+        // Fixed an index out of bounds error when all rooms are occupied
+        // Changed data type of payment from int to double
+        // Removed the for-loop for the checking of the first night, it is redundant
+        // Simplified the for-loop for adding each night number into occupiedNights
+        // Added change for the payment
+        // Made the comments more understandable (hopefully)
+
         int roomType;
-        int roomNumber;
         int nightsBooked;
-        int payment;
-        String[] roomTypeDetails = {"Standard rooms (₱2,500/night)", "Deluxe rooms (₱4,000/night)...", "Suite rooms (₱8,000/night)..."};
-        int[] roomPayment = {2500, 4000, 8000};
+        double payment;
+        String[] roomTypeDetails = {"Standard rooms (₱2,500/night)","Deluxe rooms (₱4,000/night)...","Suite rooms (₱8,000/night)..."};
+        double[] roomPayment = {2500,4000,8000};
 
         // Guest Name
         System.out.print("Input Guest Name (Walk-in): ");
@@ -285,8 +293,7 @@ public class Main {
             System.out.print("Input Room Type: (1. Standard, 2. Deluxe, 3. Suite): ");
             roomType = kbd.nextInt();
             if (roomType < 1 || roomType > 3) System.out.println("Invalid room type, please try again.\n");
-        } while (roomType < 1 || roomType > 3);
-        roomType--;
+        } while (roomType < 1 || roomType > 3); roomType--;
 
         // Nights booked and validation
         do {
@@ -298,60 +305,56 @@ public class Main {
         System.out.println("Processing Walk-in Check-In... Checking for available " + roomTypeDetails[roomType]);
 
 
-        // Abstraction here
-        // This is for saving the available room numbers
-        int[] occupiedNights = new int[nightsBooked];
+        int[] occupiedNights = new int[nightsBooked]; // This is for saving the room numbers for setting the rooms to occupied
         String[][] rooms = allRooms[roomType];
         int totalRoomNumber = allRooms[roomType].length;
         int nightNumber = 0;
+        int roomNumber = 0;
 
 
-        // This for loop gets the room number available and sends a message if there is no rooms are available.
-        // This will check ONLY IF THE FIRST NIGHT is available.
-        for (roomNumber = 0; roomNumber < totalRoomNumber; ) {
-            if (rooms[roomNumber][0].equals("Available")) { // This loop breaks, the room number is saved for the next for loop
-                break;
 
-            } else { // Goes here if ALL rooms are occupied
-                System.out.println("No rooms found. Try again");
+        // From the roomNumber from before, it adds the night into an array
+        for (nightNumber = 0; nightNumber < nightsBooked; nightNumber++) {
+
+            // If there is no available rooms left
+            if (roomNumber > totalRoomNumber - 1) {
+                System.out.println("No available rooms found. Please choose another room type.");
                 return;
             }
-        }
 
-        // From the roomNumber from before, it adds all available nights to an array
-        for (nightNumber = 0; nightNumber < nightsBooked; nightNumber++) {
-            if (rooms[roomNumber][nightNumber].equals("Available")) { // Checks if the night is occupied, Adds the night number to the array
-                occupiedNights[nightNumber] = nightNumber;
-
-            } else { // Moves up the room number if it detects a night in that room number is already booked or occupied
+            // Checks if the night is not available, if it is not, then the room number moves to the next room
+            if (!rooms[roomNumber][nightNumber].equals("Available")) {
                 roomNumber++;
-                occupiedNights[nightNumber] = nightNumber;
             }
+
+            // Adds the night number into an array
+            // occupiedNights = [0,1,2,3] if occupied for 4 nights
+            occupiedNights[nightNumber] = nightNumber;
         }
+
+        // Sets the rooms into occupied
+        for (int availableNights : occupiedNights) {
+            allRooms[roomType][roomNumber][availableNights] = "Occupied";
+            roomGuests[roomType][roomNumber][availableNights] = guestName;
+        }
+
+
 
         String roomName = translator(roomType, roomNumber);
         System.out.println("Found room " + roomName);
-
-        // If all conditions and validations are met, goes here
-        for (int availableRooms : occupiedNights) {
-            allRooms[roomType][roomNumber][availableRooms] = "Occupied";
-            roomGuests[roomType][roomNumber][availableRooms] = guestName;
-        }
 
         // Payment
         do {
             System.out.print("Input Payment (Room Only, ₱" + roomPayment[roomType] + " * " + nightsBooked + ") for a total of ₱" + roomPayment[roomType] * nightsBooked + ": ");
             payment = kbd.nextInt();
-            if (payment < roomPayment[roomType] * nightsBooked)
-                System.out.println("Payment failed. Insufficient funds");
+            if (payment < roomPayment[roomType] * nightsBooked) System.out.println("Payment failed. Insufficient funds");
         } while (payment < roomPayment[roomType] * nightsBooked);
 
         System.out.println("Payment Successful");
+        if (payment > roomPayment[roomType] * nightsBooked) System.out.println("Change: ₱" + (payment - roomPayment[roomType] * nightsBooked));
         System.out.println("Update Status: Room " + roomName + " is now set to 'Occupied' by " + guestName + ".");
         System.out.println("--- Check-In Successful ---");
         System.out.println("Guest " + guestName + " is now occupying Room " + roomName + " for " + nightsBooked + " night.");
-
-
     }
 
 
