@@ -1,3 +1,15 @@
+/*
+ * GROUP 6 FINAL PROJECT - HOTEL RESERVATION SYSTEM
+ * MEMBERS:
+ * - Crhys Antony Reyes
+ * - Francis Velasco
+ * - Janrey Aclan
+ * - Jaysen Larie Rosana
+ * - Julian Nayr Rosete
+ * - Kristoff Jann Calubaquib
+ * - Mauryz John Bisarra
+ */
+
 import java.util.Scanner;
 
 public class Main {
@@ -130,31 +142,23 @@ public class Main {
         int nightStayed = -1;
         do {
             System.out.print("Enter number of nights to book: ");
-            String input = kbd.nextLine();
+            nightStayed = obtainInt(kbd);
 
-            if (input.isEmpty()) {
-                nightStayed = -1; // Invalid choice
-            } else {
-                nightStayed = Integer.parseInt(input);
-                if (nightStayed < 1 || nightStayed > 10) {
-                    System.out.println("\nInvalid number of nights. Please enter a value between 2 and 10.");
-                }
+
+            if (nightStayed < 1 || nightStayed > 10) {
+                System.out.println("\nInvalid number of nights. Please enter a value between 2 and 10.");
             }
         } while (nightStayed < 1 || nightStayed > 10);
 
         int nightStarting = -1;
         do {
             System.out.print("Enter what starting night to book: ");
-            String input = kbd.nextLine();
+            nightStarting = obtainInt(kbd);
 
-            if (input.isEmpty()) {
-                nightStarting = -1; // Invalid choice
-            } else {
-                nightStarting = Integer.parseInt(input);
-                if (nightStarting < 2 || nightStarting > 10) {
-                    System.out.println("\nInvalid number of nights. Please enter a value between 2 and 10.");
-                }
+            if (nightStarting < 2 || nightStarting > 10) {
+                System.out.println("\nInvalid number of nights. Please enter a value between 2 and 10.");
             }
+
         } while (nightStarting < 2 || nightStarting > 10); // Validate starting night
         nightStarting = nightStarting - 1; // Adjust for 0-based index
 
@@ -174,13 +178,14 @@ public class Main {
             for (int room = 0; room < rooms.length; room++) { // loop through each room
                 available = true; // reset availability for each room
                 // Check if the room is available for the required number of nights
-                for (int i = 0; i < nightStayed && available; i++) { // loop through required nights, if available becomes false, exit loop
+                for (int i = 0; i < nightStayed; i++) { // loop through required nights, if available becomes false, exit loop
                     if (night + i >= rooms[0].length) { // Check bounds
                         available = false; // Exceeds booking period
                         break;
                     }
                     if (!(rooms[room][night + i].equalsIgnoreCase("Available"))) { // Check if already booked, null means available
                         available = false; // If any night is booked, set available to false
+                        break;
                     }
                 }
 
