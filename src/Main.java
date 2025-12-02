@@ -586,21 +586,23 @@ public class Main {
         String[] guestsRoomNum;
         String[] generalRoomNum;
 
+        roomInd = roomInd - 1; // Adjust for 0-based index
+
         // Select correct room type arrays based on input
         switch (roomChar) {
             case 'T' -> {
-                guestsRoomNum = roomGuests[0][roomInd - 1]; // Specific guest list for room
-                generalRoomNum = allRooms[0][roomInd - 1]; // Specific room availability
+                guestsRoomNum = roomGuests[0][roomInd]; // Specific guest list for room
+                generalRoomNum = allRooms[0][roomInd]; // Specific room availability
                 numDaysId(guestsRoomNum, generalRoomNum, room); // Process checkout
             }
             case 'D' -> {
-                guestsRoomNum = roomGuests[1][roomInd - 1];
-                generalRoomNum = allRooms[1][roomInd - 1];
+                guestsRoomNum = roomGuests[1][roomInd];
+                generalRoomNum = allRooms[1][roomInd];
                 numDaysId(guestsRoomNum, generalRoomNum, room);
             }
             case 'S' -> {
-                guestsRoomNum = roomGuests[2][roomInd - 2];
-                generalRoomNum = allRooms[2][roomInd - 2];
+                guestsRoomNum = roomGuests[2][roomInd];
+                generalRoomNum = allRooms[2][roomInd];
                 numDaysId(guestsRoomNum, generalRoomNum, room);
             }
         }
