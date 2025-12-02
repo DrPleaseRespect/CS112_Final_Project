@@ -550,7 +550,7 @@ public class Main {
             // Validate room type and index based on limits
             switch (roomChar) { // Standard rooms (T1–T15)
                 case 'T' -> {
-                    while (roomInd < 0 || roomInd > 15) {
+                    while (roomInd <= 0 || roomInd > 15) {
                         System.out.println("Room number input exceeds amount of rooms in Standard Type...");
                         System.out.print("Input Room Number for Check-Out: ");
                         room = kbd.nextLine();
@@ -559,7 +559,7 @@ public class Main {
                     }
                 }
                 case 'D' -> { // Deluxe rooms (D1–D10)
-                    while (roomInd < 0 || roomInd > 10) {
+                    while (roomInd <= 0 || roomInd > 10) {
                         System.out.println("Room number input exceeds amount of rooms in Deluxe Type...");
                         System.out.print("Input Room Number for Check-Out: ");
                         room = kbd.nextLine();
@@ -568,7 +568,7 @@ public class Main {
                     }
                 }
                 case 'S' -> { // Suite rooms (S1–S5)
-                    while (roomInd < 0 || roomInd > 5) {
+                    while (roomInd <= 0 || roomInd > 5) {
                         System.out.println("Room number input exceeds amount of rooms in Suite Type...");
                         System.out.print("Input Room Number for Check-Out: ");
                         room = kbd.nextLine();
