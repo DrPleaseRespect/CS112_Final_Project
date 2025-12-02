@@ -499,13 +499,13 @@ public class Main {
     // Kristoff Contrib - Check-Out Method
     // Method to handle the check-out process
     public static void checkOut(Scanner kbd) {
-        System.out.print("Input Room Number for Check-Out: ");
         char roomChar; // Stores the first character of the room (T, D, or S)
         int roomInd; // Stores the numeric part of the room number (e.g. T1, gets number after T)
         String room; // Full room input (e.g., "T5")
 
         // Loop until a valid room type (T, D, or S) is entered
         do {
+            System.out.print("Input Room Number for Check-Out: ");
             room = kbd.nextLine();
             // Ensure room input is more than 1 character (must have type + number)
             while (room.length() <= 1) { // modified from == to <= to catch single character inputs and blank inputs
@@ -516,7 +516,7 @@ public class Main {
             // Extract room type and room index
             roomChar = room.charAt(0); // First character (T/D/S)
             roomInd = Integer.parseInt(room.substring(1)); // Remaining digits
-            // NOTE: uses naming scheme of digits 1-15 as room number, change beginIndex to 2 if using naming scheme of 101-115, 201-210, 301-305
+            // NOTE: uses naming scheme of digits 1-15 as room number
 
             // Validate room type and index based on limits
             switch (roomChar) { // Standard rooms (T1–T15)
@@ -525,6 +525,7 @@ public class Main {
                         System.out.println("Room number input exceeds amount of rooms in Standard Type...");
                         System.out.print("Input Room Number for Check-Out: ");
                         room = kbd.nextLine();
+                        roomChar = room.charAt(0);
                         roomInd = Integer.parseInt(room.substring(1));
                     }
                 }
@@ -533,6 +534,7 @@ public class Main {
                         System.out.println("Room number input exceeds amount of rooms in Deluxe Type...");
                         System.out.print("Input Room Number for Check-Out: ");
                         room = kbd.nextLine();
+                        roomChar = room.charAt(0);
                         roomInd = Integer.parseInt(room.substring(1));
                     }
                 }
@@ -541,60 +543,48 @@ public class Main {
                         System.out.println("Room number input exceeds amount of rooms in Suite Type...");
                         System.out.print("Input Room Number for Check-Out: ");
                         room = kbd.nextLine();
+                        roomChar = room.charAt(0);
                         roomInd = Integer.parseInt(room.substring(1));
                     }
                 }
-                default -> { // Invalid room type entered
-                    System.out.println("Invalid room type given (inputted room number must start with T, D, or S)....");
-                    System.out.print("Input Room Number for Check-Out: ");
-                }
+            }
+            if (roomChar != 'T' && roomChar != 'D' && roomChar != 'S') {
+                System.out.println("Invalid room type given (inputted room number must start with T, D, or S)....");
             }
         } while (roomChar != 'T' && roomChar != 'D' && roomChar != 'S'); // Repeat until valid type
 
         // Arrays to store guest and room info
-        String[][] guestsRoom;
-        String[][] generalRoom;
         String[] guestsRoomNum;
         String[] generalRoomNum;
 
         // Select correct room type arrays based on input
         switch (roomChar) {
             case 'T' -> {
-                guestsRoom = roomGuests[0]; // Guests in Standard rooms
-                generalRoom = allRooms[0]; // Room availability for Standard
-                guestsRoomNum = guestsRoom[roomInd - 1]; // Specific guest list for room
-                generalRoomNum = generalRoom[roomInd - 1]; // Specific room availability
-                numDaysId(guestsRoomNum, generalRoomNum, 'T', room); // Process checkout
+                guestsRoomNum = roomGuests[0][roomInd - 1]; // Specific guest list for room
+                generalRoomNum = allRooms[0][roomInd - 1]; // Specific room availability
+                numDaysId(guestsRoomNum, generalRoomNum, room); // Process checkout
             }
             case 'D' -> {
-                guestsRoom = roomGuests[1]; // Guests in Deluxe rooms
-                generalRoom = allRooms[1]; // Room availability for Deluxe
-                guestsRoomNum = guestsRoom[roomInd - 1];
-                generalRoomNum = generalRoom[roomInd - 1];
-                numDaysId(guestsRoomNum, generalRoomNum, 'D', room);
+                guestsRoomNum = roomGuests[1][roomInd - 1];
+                generalRoomNum = allRooms[1][roomInd - 1];
+                numDaysId(guestsRoomNum, generalRoomNum, room);
             }
             case 'S' -> {
-                guestsRoom = roomGuests[2]; // Guests in Suite rooms
-                generalRoom = allRooms[2]; // Room availability for Suite
-                guestsRoomNum = guestsRoom[roomInd - 1];
-                generalRoomNum = generalRoom[roomInd - 1];
-                numDaysId(guestsRoomNum, generalRoomNum, 'S', room);
+                guestsRoomNum = roomGuests[2][roomInd - 2];
+                generalRoomNum = allRooms[2][roomInd - 2];
+                numDaysId(guestsRoomNum, generalRoomNum, room);
             }
         }
     }
 
     // Method to calculate number of days stayed and free up the room (uses guest list)
-    public static void numDaysId(String[] guestsRoomNum, String[] generalRoomNum, char roomType, String room) {
-        // removed outer for loop, only checks if 1st day/index is "Occupied"
-        // changed iniDay to 0
-        // renamed finDay to numDays
-        // adjusted code to fit in with the changes stated above
-        if (generalRoomNum[0].equals("Occupied")) { // Found a booked guest
-            String key = guestsRoomNum[0]; // Guest name
+    public static void numDaysId(String[] guestsRoomNum, String[] generalRoomNum, String room) {
+        if (generalRoomNum[0].equals("Occupied")) { // Found a booked room in the first day
+            String guestName = guestsRoomNum[0]; // Guest name
             int numDays = 1; // Initialize total days stayed
-            // Count consecutive days booked by same guest
+            // Count consecutive days booked by checking if the next day/next index is still "Occupied"
             for (; numDays < generalRoomNum.length; numDays++) {
-                if (!key.equalsIgnoreCase(guestsRoomNum[numDays])) {
+                if (!generalRoomNum[0].equalsIgnoreCase(generalRoomNum[numDays])) {
                     break;
                 }
                 guestsRoomNum[numDays] = null; // Free up guest slot
@@ -607,7 +597,7 @@ public class Main {
             System.out.println("Verifying Check-Out for " + room);
 
             // Generate bill for guest
-            genBill(numDays, roomType, key, room);
+            genBill(numDays, room, guestName);
 
         } else { // No booking found
             System.out.println("No occupied room found in provided room number.");
@@ -616,13 +606,13 @@ public class Main {
 
 
     // Method to generate bill and finalize payment
-    public static void genBill(int numDays, char roomType, String guestName, String roomName) {
+    public static void genBill(int numDays, String roomName, String guestName) {
         Scanner kbd = new Scanner(System.in);
         double subTotal = 0;
         System.out.println("--- Bill Calculation ---");
 
         // Assign daily rate based on room type
-        switch (roomType) {
+        switch (roomName.charAt(0)) {
             case 'T' -> subTotal = 2500; // Standard rate
             case 'D' -> subTotal = 4000; // Deluxe rate
             case 'S' -> subTotal = 8000; // Suite rate
@@ -641,7 +631,20 @@ public class Main {
         System.out.println("Tax (10% of PHP " + subFee + "): PHP " + tax);
         System.out.println("Total Amount Due: PHP " + subFee + " + PHP " + tax + " = PHP " + totalAmt);
 
+        double pay = payment(kbd, totalAmt);
+
+        // Print final receipt
+        System.out.println("--- Final Bill / Receipt ---");
+        System.out.println("Guest: " + guestName + " | Room: " + roomName);
+        System.out.println("Total Amount Due: " + totalAmt);
+        System.out.println("Amount Paid: " + pay);
+        System.out.println("**Change Due: " + (pay - totalAmt) + "**");
+        System.out.println("**Check-Out Complete. Room " + roomName + " is now available.**");
+    }
+
+    public static double payment(Scanner kbd, double totalAmt) {
         // Handle payment input
+        System.out.println("--- Payment ---");
         double pay;
         do {
             System.out.print("Input Final Payment Amount: ");
@@ -657,14 +660,7 @@ public class Main {
         double change = pay - totalAmt;
         System.out.println("Payment: PHP " + pay + " received.");
         System.out.println("Change Calculation: PHP " + pay + " - PHP " + totalAmt + " = PHP " + change);
-
-        // Print final receipt
-        System.out.println("--- Final Bill / Receipt ---");
-        System.out.println("Guest: " + guestName + " | Room: " + roomName);
-        System.out.println("Total Amount Due: " + totalAmt);
-        System.out.println("Amount Paid: " + pay);
-        System.out.println("**Change Due: " + change + "**");
-        System.out.println("**Check-Out Complete. Room " + roomName + " is now available.**");
+        return pay;
     }
 
 }
